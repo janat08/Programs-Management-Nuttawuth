@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import {UsersTable, data, columns} from "./UsersTable";
-import {Button} from 'semantic-ui-react';
 
 
 @withRouter
@@ -16,13 +15,13 @@ export default class Login extends React.Component {
         key: "select",
         render: (td)=>{
           return (
-            <Button>Log In </Button>
+            <button class="uk-button uk-button-default">Log In </button>
           )
         }
       })
+
     return (
     <div>
-        <h4> Log In </h4>
         <UsersTable data={data} columns={columns}></UsersTable>
         {/* {
             store.users.map(function (x, i){

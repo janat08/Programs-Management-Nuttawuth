@@ -8,7 +8,12 @@ import { Provider } from 'mobx-react';
 
 import App from './App';
 import store from "./stores/store.js"
-import 'semantic-ui-css/semantic.min.css';
+
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+
+// loads the Icon plugin
+UIkit.use(Icons);
 
 
 const stores = {

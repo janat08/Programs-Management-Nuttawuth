@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Store } from "../stores/store.js"
-import {Form, Input, Button, Checkbox} from 'semantic-ui-react';
 
 
 @withRouter
@@ -13,7 +12,7 @@ export default class Register extends React.Component {
     
     return (
     <div>
-      <Form>
+      {/* <Form>
         <Form.Item>
             <Input placeholder="Username" />
         </Form.Item>
@@ -32,7 +31,7 @@ export default class Register extends React.Component {
             Sign Up
           </Button>
         </Form.Item>
-      </Form>
+      </Form> */}
     </div>
     );
   }

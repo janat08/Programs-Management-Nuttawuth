@@ -2,7 +2,6 @@
 // import { withRouter, Link } from 'react-router-dom';
 // import { inject, observer } from 'mobx-react';
 // import store  from "../stores/store.js"
-// import {Icon, List, Avatar, Button, TimePicker} from 'semantic-ui-react';
 // import moment from "moment"
 
 // const IconText = ({ type, text }) => (

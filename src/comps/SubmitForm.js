@@ -2,100 +2,229 @@ import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import {inject, observer} from 'mobx-react';
 import {Store} from "../stores/store.js"
-import {Radio, Form, Input, Icon, Button, Card, TextArea} from 'semantic-ui-react';
+import Input from "./forms/Input"
+import Radio from "./forms/Radio"
+import Upload from "./forms/Upload"
+import {Form, Text, FormField} from 'react-form';
 
-@withRouter
-@observer
-@inject('store')
-export default class SubmitForm extends React.Component {
-  render() {
-    const formItemLayout = {
-      labelCol: {
-        span: 7
-      },
-      wrapperCol: {
-        span: 17
-      }
-    };
-    return (
-      <div>
-        <h2>General Forms</h2>
-        <Form>
-          <Form.Field  label="Concept Title">
-            <Input/>
-          </Form.Field>
-          <Form.Field  label="Website">
-            <Input/>
-          </Form.Field>
-          <Form.Field  label="What would you like to present">
-            <TextArea />
-          </Form.Field>
-          <Form.Field  label="Tell us about yourself (or your organization)">
-              <TextArea />
-          </Form.Field>
-          <Form.Field  label="Do you have a location/venue to present your work">
-          <Radio.Group>
-              <Radio value={1}>No</Radio>
-              <Radio value={2}>Yes</Radio>
-            </Radio.Group>
-          </Form.Field>
-          <Form.Field  label="Name of the location">
-            <Input/>
-          </Form.Field>
-          <Form.Field  label="Address of the location">
-            <TextArea />
-          </Form.Field>
-        </Form>
-
-        <Form>
-          <Form.Field  label="Application Type">
-          <Radio.Group>
-              <Radio value={1}>Exhibition</Radio>
-              <Radio value={2}>Event</Radio>
-            </Radio.Group>
-          </Form.Field>
-        </Form>
-
-        <Form layout="horizontal">
-          <Form.Field  label="Select event type for specifics">
-            <Radio.Group>
-              <Radio value={1}>Talk</Radio>
-              <Radio value={2}>Workshop</Radio>
-              <Radio value={3}>Activity</Radio>
-            </Radio.Group>
-          </Form.Field>
-        </Form>
-
-        {/* ACTIVITY */}
-        <Form layout="horizontal">
-          <Form.Field  label="This activity is:">
-            <Radio.Group>
-              <Radio value={1}>Public</Radio>
-              <Radio value={2}>Private(ticket sale)</Radio>
-              <Radio value={3}>Private(on invite only)</Radio>
-            </Radio.Group>
-          </Form.Field>
-          <Form.Field  label="What is the name (or names) of the speaker(s)"
-          extra="Please share if there are already names known">
-            <TextArea />
-          </Form.Field>
-          <Form.Field  label="Location">
-          <Radio.Group>
-              <Radio value={1}>Awardshow</Radio>
-              <Radio value={2}>Challenge</Radio>
-              <Radio value={2}>Hackathon/Workshop</Radio>
-              <Radio value={2}>Kick-off</Radio>
-              <Radio value={2}>Party</Radio>
-              <Radio value={2}>Pitch</Radio>
-              <Radio value={2}>Presentation</Radio>
-              <Radio value={2}>Seminar</Radio>
-              <Radio value={2}>Talkshow</Radio>
-              <Radio value={2}>Tour</Radio>
-            </Radio.Group>
-          </Form.Field>
-        </Form>
-        
+var end = [
+  {
+    label: "Do you have a succes story you would like to share",
+    type: "textarea", //default input
+    options: "",
+    value: ""
+  }, {
+    render: () => <div><Upload/>
+        <p>
+          Complex linked media component
+        </p>
       </div>
-    );
   }
-}
+]
+
+var forms = [
+  {
+    label: "Concept title",
+    type: "",
+    options: "",
+    value: ""
+  }, {
+    label: "Website",
+    type: "",
+    options: "",
+    value: ""
+  }, {
+    label: "What would you like to present",
+    type: "textarea", //default input
+    options: "",
+    value: [""]
+  }, {
+    label: "Tell us about yourself (or your organization)",
+    type: "textarea", //default input
+    options: "",
+    value: ""
+  }, {
+    label: "Do you have a location/venue to present your work",
+    type: "controlRadio", //default input
+    options: [
+      "No", "Yes"
+    ],
+    value: {
+      No: [],
+      Yes: [
+        {
+          label: "Name of location",
+          type: "", //default input
+          options: "",
+          value: ""
+        }, {
+          label: "Adress of the location",
+          type: "", //default input
+          options: "",
+          value: ""
+        }
+      ]
+    }
+  }, {
+    label: "Application type",
+    type: "controlRadio", //default input
+    options: [
+      "Exhibition", "Activity"
+    ],
+    value: {
+      Exhibition: [
+        // { TODO: I could just present checkboxes and map over after the fact   label:
+        // "Are you interested in one of these locations",   type: "", //multi select
+        // options: "",   value: "" },
+        {
+          label: "How many people will be participating",
+          type: "", //default input
+          options: "",
+          value: ""
+        }, 
+        // {
+        //   label: "Special guests",
+        //   type: "list", //TODO: list https://getuikit.com/docs/list
+        //   options: [
+        //     {
+        //       label: "Name",
+        //       type: "", //default input
+        //       options: "",
+        //       value: ""
+        //     }, {
+        //       label: "Website",
+        //       type: "", //default input
+        //       options: "",
+        //       value: ""
+        //     }
+        //   ],
+        //   value: []
+        // }, 
+        {
+          label: "I am interested in",
+          type: "", //multi select   
+          options: 
+          ["Designride ", " Design shop "],   
+          value: " " },
+        ...end
+        ],
+        Activity : [
+          {
+            label: "This activity is:",
+            type: "radio", //default input
+            options: [
+              "Public", "Private(ticket on sale)", "Private(on invite only)"
+            ],
+            value: ""
+          }, {
+            label: "What is the name (or names) of the speaker(s)", //dynamic
+            type: "dynamic", //default input
+            options: "Add speaker",
+            value: [""],
+          }, {
+            label: "Type",
+            type: "radio", //default input
+            options: [
+              "Awardshow",
+              "Challenge",
+              "Hackathon/Workshop",
+              "Kick-off",
+              "Party",
+              "Pitch",
+              "Presentation",
+              "Seminar",
+              "Talkshow",
+              "Tour"
+            ],
+            value: ""
+          },
+          ...end
+        ]
+      }
+    }
+  ]
+
+  var forms = forms.map(x => {
+    x.label += ":";
+    return x
+  })
+  @withRouter @observer @inject('store')
+  export default class SubmitForm extends React.Component {
+
+    render() {
+
+      return (
+        <div className="uk-section uk-section-default">
+          <Form onSubmit={submittedValues => console.log(submittedValues)}>
+            {formApi => (
+              <form
+                className="uk-form-horizontal uk-margin-large"
+                onSubmit={formApi.submitForm}>
+                <legend className="uk-legend">Basics</legend>
+                {forms
+                  .map(function recursive(x, i, ar) {
+                    //Branching logic
+                    if (x.type == "controlRadio") {
+                      var value = formApi.values[x.label]
+                      if (value && !ar[i].value[value]) {
+                        return <Radio key={x.label} field={x.label} label={x.label} options={x.options}/>
+                      } else if (!value) {
+                        return <Radio key={x.label} field={x.label} label={x.label} options={x.options}/>
+                      }
+                      return (
+                        <div key={x.label}>
+                          <Radio field={x.label} label={x.label} options={x.options}/>
+                          <legend className="uk-legend">{value == "Yes"
+                              ? "Personal Location"
+                              : value == "No"
+                                ? ""
+                                : value}</legend>
+                          {ar[i]
+                            .value[value]
+                            .map(recursive)}
+                        </div>
+                      )
+                    }
+
+                    if (x.type == "" || x.type == "input") {
+                      return (<Input key={x.label} field={x.label} label={x.label}/>)
+                    } else if (x.type == "radio") {
+                      return <Radio key={x.label} field={x.label} label={x.label} options={x.options}/>
+                    } else if (x.render) {
+                      return x.render()
+                    } else if (x.type == "textarea") {
+                      return <Input key={x.label} field={x.label} label={x.label} textarea={true}/>
+                    } else if (x.type == "dynamic"){
+                      return (
+                        <div>
+
+                  <Input key={x.label} field={[x.label, 0]} label={x.label} />
+                        {(formApi.values[x.label]? formApi.values[x.label]: []).map((y,z)=>{
+                          // if (z ==0)return null
+                          return ( 
+                          <Input key={z.toString()} field={[x.label, z]} label={x.label} />
+                        )
+                        })
+                      }
+                                                          <div className="uk-margin">
+          <label className="uk-form-label">                        </label>
+          <div className="uk-form-controls"> <button
+                  onClick={() => formApi.addValue(x.label, '')}
+                  type="button"
+                  className="uk-button uk-button-default">{x.options}</button></div></div>
+
+                        </div>
+                      )
+                    }
+                  })}
+
+                <p data-uk-margin>
+                  <button type="submit" className="uk-button uk-button-primary">Submit</button>
+                </p>
+              </form>
+            )}
+          </Form>
+        </div>
+      );
+    }
+  }

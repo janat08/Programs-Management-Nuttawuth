@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import store  from "../stores/store.js"
-import {Table, Checkbox, Button, Divider, Icon} from 'semantic-ui-react';
 import moment from "moment"
 // const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
@@ -14,7 +13,7 @@ class ProgramsTable extends React.Component {
   render() {
     return (
     <div>
-        <Table rowKey={record => record.index} columns={this.props.columns} dataSource={this.props.data} />
+        {/* <Table rowKey={record => record.index} columns={this.props.columns} dataSource={this.props.data} /> */}
         {/* <a.Checkbox onChange={onChange} checked={this.state.checked}>Checkbox</a.Checkbox> */}
     </div>
     );

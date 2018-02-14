@@ -12,7 +12,6 @@ export default class Forms extends React.Component {
 
     return (
       <div>
-        <h2>General Forms</h2>
         <SubmitForm />
       </div>
     );
