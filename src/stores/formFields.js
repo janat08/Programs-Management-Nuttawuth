@@ -19,12 +19,12 @@ var end = [
 var forms = [
     {
       label: "Concept title",
-      type: "",
+      type: "input",
       options: "",
       value: ""
     }, {
       label: "Website",
-      type: "",
+      type: "input",
       options: "",
       value: ""
     }, {
@@ -40,61 +40,73 @@ var forms = [
     }, {
       label: "Do you have a location/venue to present your work",
       type: "controlRadio", //default input
+      selected: "",
       options: {
         No: [],
         Yes: [
           {
             label: "Name of location",
-            type: "", //default input
+            type: "input", //default input
             options: "",
             value: ""
           }, {
             label: "Adress of the location",
-            type: "", //default input
+            type: "input", //default input
             options: "",
             value: ""
           }
         ]
       },
-      value: {}
+      value: {},
     }, {
       label: "Application type",
       type: "controlRadio", //default input
+      selected: "",
       options: {
         Exhibition: [
-          // { TODO: I could just present checkboxes and map over after the fact   label:
-          // "Are you interested in one of these locations",   type: "", //multi select
-          // options: "",   value: "" },
+          {
+            label: "Are you interested in one of these locations",   
+            type: "multi", //multi select
+          options: ["a", "b"],  
+           value: [false, false] 
+          },
           {
             label: "How many people will be participating",
-            type: "", //default input
+            type: "input", //default input
             options: "",
             value: ""
           }, 
-          // {
-          //   label: "Special guests",
-          //   type: "list", //TODO: list https://getuikit.com/docs/list
-          //   options: [
-          //     {
-          //       label: "Name",
-          //       type: "", //default input
-          //       options: "",
-          //       value: ""
-          //     }, {
-          //       label: "Website",
-          //       type: "", //default input
-          //       options: "",
-          //       value: ""
-          //     }
-          //   ],
-          //   value: []
-          // }, 
+          {
+            label: "Special guests",
+            type: "list", //TODO: list https://getuikit.com/docs/list
+            options: "Add guest",
+            schema:                [{
+                label: "Name", 
+                type: "input", //default input
+                options: "",
+                value: ""
+               },
+                             {
+                label: "Website",
+                type: "input", //default input
+                options: "",
+                value: ""
+               }],
+            value: [
+              // {
+              //   label: "Name", ??Note it should start empty
+              //   type: "", //default input
+              //   options: "",
+              //   value: ""
+              //  }
+          ]
+          }, 
           {
             label: "I am interested in",
-            type: "", //multi select   
+            type: "multi", //multi select   
             options: 
             ["Designride ", " Design shop "],   
-            value: " " },
+            value: [false, false] },
           ...end
           ],
           Activity : [
@@ -107,7 +119,7 @@ var forms = [
               value: ""
             }, {
               label: "What is the name (or names) of the speaker(s)", //dynamic
-              type: "dynamic", //default input
+              type: "dynamic", //TODO:
               options: "Add speaker",
               value: [""],
             }, {

@@ -18,26 +18,41 @@ var s = observable({
         this.users.push(Object.assign(x, {index: this.users.length}))
         this.currentUserIndex = this.users.length-1
     }),
-    setValue: action(function(...address){
-        // address.push("value")
-        return function(val){
-        // _.set(s.form, address, val)
-        address.reduce((a,x)=>{ 
-            return a[x]
-        }, s.form).value = val
-        console.log(
-            address.reduce((a,x)=>{
-                return a[x]
-            }, s.form).value
-        )
+    setValue: action(function setValue(ab, multi=[]){
+        return function(value){
+          
+          if (ab){
+            var value = [ab, "value",...multi, ...value]
+          } else {
+            var value = [...multi, ...value]
+          }
+        
+          // console.log("value", value,  Store.setValue(...value))
+          return function(val){
+            _.set(s.form, value, val)
+        
+            }
         }
+        
+        }),
+    addField: action(function(fields, val){
+        // var fields = 
+        fields.reduce((a,x)=>{
+            return a[x]
+        }, s.form).value.push(val)
+        // fields.value.push("")
     }),
-    addField: action(function(...fields){
-        var fields = fields.reduce((a,x)=>{
+    removeField: action(function(fields){
+        // var fields = 
+        console.log(fields)
+        var last = fields.pop()
+        var target = fields.reduce((a,x)=>{
             return a[x]
         }, s.form)
-        fields.value.push("")
-    })
+        console.log(target)
+        target.splice(last, 1)
+        // fields.value.push("")
+    }),
 })
 window.s = s
 

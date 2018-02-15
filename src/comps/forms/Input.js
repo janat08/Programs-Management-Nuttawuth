@@ -1,8 +1,10 @@
 import React from 'react';
 import Message from "./Message"
+import {inject, observer} from 'mobx-react';
+// import store from ""
 
+@observer @inject("store")
 class Input extends React.Component {
-
     render() {
         const {
           // onInput,
@@ -10,7 +12,13 @@ class Input extends React.Component {
           get,
           set,
           setTouched,
+          values,
+          setSelect,
+          options,
+          address
         } = this.props;
+
+        var store = this.props.store
 
         // const error = getError();
         var error = false
@@ -25,6 +33,32 @@ class Input extends React.Component {
         } else {
           inputClasses += "uk-input "
         }
+        if (this.props.dynamic){
+          return(
+            <div key={this.props.label} className="uk-margin">
+            <label className="uk-form-label">{this.props.label}</label>
+            {/* <div className=" uk-inline"> */}
+            <div className="uk-form-controls uk-inline">
+            {/* <div className=" uk-inline"> */}
+            <a className="uk-form-icon" data-uk-icon="icon: pencil" 
+            onClick={e=>store.removeField(address)}
+            ></a><input
+             className={inputClasses}
+              value={get}
+              onInput={( e ) => {
+                set(e.target.value);
+                // if ( onInput ) {
+                //   onInput( e );
+                // }
+              }}
+              // onBlur={() => {
+              //   setTouched();
+              // }}
+              /></div>
+              </div>
+              //  </div>
+          )
+        }
         if (this.props.control){
           return(
             <div className="uk-margin">
@@ -33,14 +67,19 @@ class Input extends React.Component {
                         <div>
                             {this.props.options.map((x, i) => {
                                     return <div key={x}>
-                                        <label><input
+                                        <label>
+                                          <input
                                         type="radio"
                                             className={error
                                         ? "uk-radio .uk-form-danger"
                                         : "uk-radio"}
                                         checked={x==get}
                                         onChange={( e ) => {
-                                            set({[e.target.value]: this.props.values[e.target.value]});
+                                          var val = e.target.value
+                                          setSelect(val)
+
+                                            set(values[val]);
+                                            console.log(val)
                                             // if ( onInput ) {
                                             //   onInput( e );
                                             // }
@@ -53,6 +92,20 @@ class Input extends React.Component {
                         </div>
             </div>
         </div>
+          )
+        }
+        if (this.props.multi){
+          return (
+            <div className="uk-margin">
+            <label className="uk-form-label">{this.props.label}</label>
+            <div className="uk-form-controls uk-form-controls-text">
+            <div className="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+            {options.map((x,i)=>{
+               return <label key={x}><input className="uk-checkbox" type="checkbox" onChange={e=>set([i])(e.target.checked)} checked={get[i]}/> {x} </label>
+            })}
+        </div>
+            </div>
+            </div>
           )
         }
         if (this.props.radio){
@@ -103,7 +156,8 @@ class Input extends React.Component {
             //    setTouched();
             //  }}
              />
-            :<input
+            :
+            <input
              className={inputClasses}
               value={get}
               onInput={( e ) => {
