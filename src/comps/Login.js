@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import {UsersTable, data, columns} from "./UsersTable";
+import {UsersTable, userColumns} from "./UsersTable";
 
 
 @withRouter
@@ -10,19 +10,19 @@ import {UsersTable, data, columns} from "./UsersTable";
 export default class Login extends React.Component {
   render() {
     var store = this.props.store
-    columns.push({
+    userColumns.push({
         title: "Select",
         key: "select",
-        render: (td)=>{
+        render: (td, ind)=>{
           return (
-            <button class="uk-button uk-button-default">Log In </button>
+            <button onClick={()=>this.props.store.login(ind)} class="uk-button uk-button-default">Log In </button>
           )
         }
       })
 
     return (
     <div>
-        <UsersTable data={data} columns={columns}></UsersTable>
+        <UsersTable data={this.props.store.users} columns={userColumns}></UsersTable>
         {/* {
             store.users.map(function (x, i){
                 return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
+import { inject, observer, autorun } from 'mobx-react';
 import store  from "../stores/store.js"
 
 
@@ -9,23 +9,25 @@ import store  from "../stores/store.js"
 @inject('store')
 class UsersTable extends React.Component {
   render() {
-    console.log(this.props.data, this.props.columns)
+
     return (
     <div>
         <table className="uk-table uk-table-responsive uk-table-divider">
     <thead>
         <tr>
 {this.props.columns.map(x=>{
-  return <th key={x.key}> {x.title}</th>
+  return <th key={x.title}> {x.title}</th>
 })}
         </tr>
     </thead>
     <tbody>
       {this.props.data.map((y,z)=>{
-        return (<tr key={y.index}>
+        return (
+        <tr key={y.index}>
           {this.props.columns.map((x,i)=>{
           var item = this.props.data[i]
-          return <td key={x.key.toString()}> {x.dataIndex?item[x.dataIndex]:x.render(item)}</td>
+
+          return <td key={x.key.toString()}> {x.dataIndex?item[x.dataIndex]:<x.render record={y}/>}</td>
 })}
         </tr>)
       })}
@@ -38,19 +40,8 @@ class UsersTable extends React.Component {
   }
 }
 
-const data = [{
-  index: 0,
-  name: 'Mike',
-  roles: {admin: true},
-}, 
-{
-  index: 1,
-  name: 'Mike',
-  roles: {admin: true, publisher: true},
-}
-];
 
-const columns = [{
+const userColumns = [{
   title: 'Name',
   dataIndex: 'name',
   key: 'name',
@@ -58,29 +49,29 @@ const columns = [{
 {
   title: 'Roles',
   key: 'index',
-  render: (record) => {
+  render: observer(({record}) => {
     var roles = record.roles
     if (Object.keys(roles).length != 1){
-      return popOver(Object.keys(roles).length, roles)
+      return popOver(Object.keys(roles).length, roles, record)
     } else {
-      return popOver(Object.keys(roles), roles)
+      return popOver(Object.keys(roles), roles, record)
     }
-  }
+  })
 }, 
 ];
 
 
-function popOver(children, roles){
+function popOver(children, roles, record){
   return (
   <div className="uk-inline">
 
     <button className="uk-button uk-button-default" type="button">{children}</button>
     <div data-uk-drop="mode: click; offset: 0" style={{width: 570}}>
     <div className="uk-card uk-card-body uk-card-hover uk-card-small uk-card-default ">
-    <div class="uk-grid-small uk-child-width-auto" data-uk-grid>
+    <div className="uk-grid-small uk-child-width-auto" data-uk-grid>
     {(
     store.roles.map(x=>{
-      return <div><label  key={x} ><input className="uk-checkbox" type="checkbox" checked={roles[x]}/> {x} </label></div>
+      return <label  key={x} ><input onChange={e=>store.users[record.index].roles[x] = e.target.checked} className="uk-checkbox" type="checkbox" checked={roles[x]}/> {x} </label>
     })
   )}
   </div>
@@ -89,4 +80,4 @@ function popOver(children, roles){
     </div>
 )
 }
-export {UsersTable, columns, data}
+export {UsersTable, userColumns}

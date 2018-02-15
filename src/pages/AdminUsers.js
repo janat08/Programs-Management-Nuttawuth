@@ -3,7 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Store } from "../stores/store.js"
 
-import {data, columns, UsersTable} from "../comps/UsersTable"
+import {userColumns, UsersTable} from "../comps/UsersTable"
 
 
 @withRouter
@@ -14,7 +14,7 @@ export default class Users extends React.Component {
     
     return (
     <div>
-      <UsersTable data={data} columns={columns}> </UsersTable>
+      <UsersTable data={this.props.store.users} columns={userColumns}> </UsersTable>
     </div>
     );
   }

@@ -1,31 +1,21 @@
 import React from 'react';
-import { Form, Text, FormField } from 'react-form';
 import Message from "./Message"
-
 
 class Input extends React.Component {
 
     render() {
-
         const {
-          fieldApi,
-          onInput,
+          // onInput,
           textarea,
-          ...rest
-        } = this.props;
-  
-        const {
-          getValue,
-          getError,
-          getWarning,
-          getSuccess,
-          setValue,
+          get,
+          set,
           setTouched,
-        } = fieldApi;
-  
-        const error = getError();
-        const warning = getWarning();
-        const success = getSuccess();
+        } = this.props;
+
+        // const error = getError();
+        var error = false
+        // const warning = getWarning();
+        // const success = getSuccess();
         var inputClasses = ""
         if (error){
           inputClasses += "uk-form-danger "
@@ -35,6 +25,66 @@ class Input extends React.Component {
         } else {
           inputClasses += "uk-input "
         }
+        if (this.props.control){
+          return(
+            <div className="uk-margin">
+            <label className="uk-form-label">{this.props.label}</label>
+            <div className="uk-form-controls uk-form-controls-text">
+                        <div>
+                            {this.props.options.map((x, i) => {
+                                    return <div key={x}>
+                                        <label><input
+                                        type="radio"
+                                            className={error
+                                        ? "uk-radio .uk-form-danger"
+                                        : "uk-radio"}
+                                        checked={x==get}
+                                        onChange={( e ) => {
+                                            set({[e.target.value]: this.props.values[e.target.value]});
+                                            // if ( onInput ) {
+                                            //   onInput( e );
+                                            // }
+                                          }}
+                                          // onBlur={() => {
+                                          //   setTouched();
+                                          // }}
+                                            value={x}/>{x}</label><br/></div>
+                                })}
+                        </div>
+            </div>
+        </div>
+          )
+        }
+        if (this.props.radio){
+          return(
+            <div className="uk-margin">
+            <label className="uk-form-label">{this.props.label}</label>
+            <div className="uk-form-controls uk-form-controls-text">
+                        <div>
+                            {this.props.options.map((x, i) => {
+                                    return <div key={x}>
+                                        <label><input
+                                        type="radio"
+                                            className={error
+                                        ? "uk-radio .uk-form-danger"
+                                        : "uk-radio"}
+                                        checked={x==get}
+                                        onChange={( e ) => {
+                                            set(e.target.value);
+                                            // if ( onInput ) {
+                                            //   onInput( e );
+                                            // }
+                                          }}
+                                          // onBlur={() => {
+                                          //   setTouched();
+                                          // }}
+                                            value={x}/>{x}</label><br/></div>
+                                })}
+                        </div>
+            </div>
+        </div>
+          )
+        }
         return (
           <div key={this.props.label} className="uk-margin">
           <label className="uk-form-label">{this.props.label}</label>
@@ -42,34 +92,34 @@ class Input extends React.Component {
             {this.props.textarea?
             <textarea
             className={inputClasses}
-             value={getValue()}
+             value={get}
              onInput={( e ) => {
-               setValue(e.target.value);
-               if ( onInput ) {
-                 onInput( e );
-               }
+               set(e.target.value);
+              //  if ( onInput ) {
+              //    onInput( e );
+              //  }
              }}
-             onBlur={() => {
-               setTouched();
-             }}
-             {...rest} />
+            //  onBlur={() => {
+            //    setTouched();
+            //  }}
+             />
             :<input
              className={inputClasses}
-              value={getValue()}
+              value={get}
               onInput={( e ) => {
-                setValue(e.target.value);
-                if ( onInput ) {
-                  onInput( e );
-                }
+                set(e.target.value);
+                // if ( onInput ) {
+                //   onInput( e );
+                // }
               }}
-              onBlur={() => {
-                setTouched();
-              }}
-              {...rest} />
+              // onBlur={() => {
+              //   setTouched();
+              // }}
+              />
               }
-            { error ? <Message message={error} /> : null }
+            {/* { error ? <Message message={error} /> : null }
             { !error && warning ? <Message message={warning} /> : null }
-            { !error && !warning && success ? <Message message={success} /> : null }
+            { !error && !warning && success ? <Message message={success} /> : null } */}
               </div>
           </div>
         );
@@ -77,6 +127,5 @@ class Input extends React.Component {
     }
   
     // Use the form field and your custom input together to create your very own input!
-    const CustomText = FormField(Input);
 
-    export default CustomText
+    export default Input

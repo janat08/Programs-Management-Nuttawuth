@@ -34,41 +34,38 @@ class CustomRadio extends React.Component {
             setTouched
         } = fieldApi;
 
-        const error = getError();
-        const warning = getWarning();
-        const success = getSuccess();
+        // const error = getError();
+        // const warning = getWarning();
+        // const success = getSuccess();
 
         return (
             <div key={this.props.label} className="uk-margin">
                 <label className="uk-form-label">{this.props.label}</label>
                 <div className="uk-form-controls uk-form-controls-text">
-                <RadioGroup field={this.props.label}>
-                {group => (
-                    <div>
-                    {this.props
-                        .options
-                        .map((x, i) => {
-                            return <div key={x}>
-                                <label><Radio
-                                    className={error
-                                ? "uk-radio .uk-form-danger"
-                                : "uk-radio"}
-                                group={group}
-                                    value={x}
-                            {...rest}/>{x}</label><br/></div>
-                        })}
-                        </div>
-            )}
-            </RadioGroup>
-                         {error
-                        ? <Message message={error}/>
-                        : null}
-                    {!error && warning
-                        ? <Message message={warning}/>
-                        : null}
-                    {!error && !warning && success
-                        ? <Message message={success}/>
-                        : null}
+                        {group => (
+                            <div>
+                                {this.props.options.map((x, i) => {
+                                        return <div key={x}>
+                                            <label><input
+                                            type="radio"
+                                                className={error
+                                            ? "uk-radio .uk-form-danger"
+                                            : "uk-radio"}
+                                            check={x==value}
+                                            name={x}
+                                            onInput={( e ) => {
+                                                setValue(e.target.value);
+                                                // if ( onInput ) {
+                                                //   onInput( e );
+                                                // }
+                                              }}
+                                              onBlur={() => {
+                                                setTouched();
+                                              }}
+                                                value={x}/>{x}</label><br/></div>
+                                    })}
+                            </div>
+                        )}
                 </div>
             </div>
         );

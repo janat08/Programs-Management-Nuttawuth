@@ -1,230 +1,137 @@
 import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import {inject, observer} from 'mobx-react';
-import {Store} from "../stores/store.js"
+import Store from "../stores/store.js"
 import Input from "./forms/Input"
-import Radio from "./forms/Radio"
 import Upload from "./forms/Upload"
 import {Form, Text, FormField} from 'react-form';
+import _ from "lodash"
 
-var end = [
-  {
-    label: "Do you have a succes story you would like to share",
-    type: "textarea", //default input
-    options: "",
-    value: ""
-  }, {
-    render: () => <div><Upload/>
-        <p>
-          Complex linked media component
-        </p>
-      </div>
+var abc = 0
+function getValue(ab){
+return function(value){
+  if (ab){
+    var value = [ab, "value", ...value]
+    console.log(ab, value)
+  } else {
+    var value = value
   }
-]
+  abc += 1
+// console.log(value, abc)
+  var res = value.reduce((a,x)=>{
+    return a[x]
+}, Store.form)
+// console.log(window.JS(res))
+  return res
+}
+}
 
-var forms = [
-  {
-    label: "Concept title",
-    type: "",
-    options: "",
-    value: ""
-  }, {
-    label: "Website",
-    type: "",
-    options: "",
-    value: ""
-  }, {
-    label: "What would you like to present",
-    type: "textarea", //default input
-    options: "",
-    value: [""]
-  }, {
-    label: "Tell us about yourself (or your organization)",
-    type: "textarea", //default input
-    options: "",
-    value: ""
-  }, {
-    label: "Do you have a location/venue to present your work",
-    type: "controlRadio", //default input
-    options: [
-      "No", "Yes"
-    ],
-    value: {
-      No: [],
-      Yes: [
-        {
-          label: "Name of location",
-          type: "", //default input
-          options: "",
-          value: ""
-        }, {
-          label: "Adress of the location",
-          type: "", //default input
-          options: "",
-          value: ""
-        }
-      ]
-    }
-  }, {
-    label: "Application type",
-    type: "controlRadio", //default input
-    options: [
-      "Exhibition", "Activity"
-    ],
-    value: {
-      Exhibition: [
-        // { TODO: I could just present checkboxes and map over after the fact   label:
-        // "Are you interested in one of these locations",   type: "", //multi select
-        // options: "",   value: "" },
-        {
-          label: "How many people will be participating",
-          type: "", //default input
-          options: "",
-          value: ""
-        }, 
-        // {
-        //   label: "Special guests",
-        //   type: "list", //TODO: list https://getuikit.com/docs/list
-        //   options: [
-        //     {
-        //       label: "Name",
-        //       type: "", //default input
-        //       options: "",
-        //       value: ""
-        //     }, {
-        //       label: "Website",
-        //       type: "", //default input
-        //       options: "",
-        //       value: ""
-        //     }
-        //   ],
-        //   value: []
-        // }, 
-        {
-          label: "I am interested in",
-          type: "", //multi select   
-          options: 
-          ["Designride ", " Design shop "],   
-          value: " " },
-        ...end
-        ],
-        Activity : [
-          {
-            label: "This activity is:",
-            type: "radio", //default input
-            options: [
-              "Public", "Private(ticket on sale)", "Private(on invite only)"
-            ],
-            value: ""
-          }, {
-            label: "What is the name (or names) of the speaker(s)", //dynamic
-            type: "dynamic", //default input
-            options: "Add speaker",
-            value: [""],
-          }, {
-            label: "Type",
-            type: "radio", //default input
-            options: [
-              "Awardshow",
-              "Challenge",
-              "Hackathon/Workshop",
-              "Kick-off",
-              "Party",
-              "Pitch",
-              "Presentation",
-              "Seminar",
-              "Talkshow",
-              "Tour"
-            ],
-            value: ""
-          },
-          ...end
-        ]
-      }
-    }
-  ]
+function setValue(ab){
+return function(value){
+  if (ab){
+    var value = [ab, "value", ...value]
+  } else {
+    var value = value
+  }
+  // console.log("value", value,  Store.setValue(...value))
+  return Store.setValue(...value)
+}
+}
 
-  var forms = forms.map(x => {
-    x.label += ":";
-    return x
-  })
+
+var Recursive = observer(function ({store, arr, ab, x, i, ar}) {
+  var curriedSet = setValue(ab, arr)
+  var curriedGet = getValue(ab)
+  //Branching logic
+  if (x.type == "controlRadio") {
+    var value = Object.keys(curriedGet([[i],"value"]))[0],
+    options = Object.keys(x.options),
+    set = curriedSet([[i]]),
+    get = value
+    
+    if (!value || !ar[i].value[value]) {
+      return <Input control get={get} set={set} key={x.label} field={x.label} label={x.label} options={options} values={x.options}/>
+    }
+    return (
+      <div key={x.label}>
+        <Input control set={set} get={get} field={x.label} label={x.label} options={options} values={x.options}/>
+        <legend className="uk-legend">{value == "Yes"
+            ? "Personal Location"
+            : value == "No"
+              ? ""
+              : value}</legend>
+        {curriedGet([[i],"value", value])
+          // arr[i].value[value]
+          .map((x,ii,ar)=>{
+            return <Recursive key={x.label} x={x} i={ii} ar={ar} store={store} arr={ar} ab={i}/>
+            // recursive.bind(null, store, null, null)
+          })
+          // .map(recursive.bind(null,store, ar, i))
+          }
+      </div>
+    )
+  }
+  var set = curriedSet([[i]])
+  var get = curriedGet([[i], "value"])
+  if (x.type == "" || x.type == "input") {
+    return (<Input get={get} set={set} key={x.label} field={x.label} label={x.label}/>)
+  } else if (x.type == "radio") {
+
+    return <Input radio get={get} set={set} key={x.label} field={x.label} label={x.label} options={x.options}/>
+  } else if (x.render) {
+    return x.render()
+  } else if (x.type == "textarea") {
+    return <Input get={get} set={set} key={x.label} field={x.label} label={x.label} textarea={true}/>
+  } else if (x.type == "dynamic"){
+    set = curriedSet([[i], 0])
+    get = curriedGet([[i], 0,"value"])
+    return (
+      <div key={x.label}>
+<Input set={set} get={get} field={[x.label, 0]} label={x.label} />
+      {(store.form[x.label]? store.form[x.label]: []).map((y,z)=>{
+        // if (z ==0)return null
+        var set = curriedSet([[i],[z],])
+        var get = curriedGet([[i],[z], "value"])
+        return ( 
+        <Input get={get} set={set} key={z.toString()} label={x.label} />
+      )
+      })
+    }
+                                        <div className="uk-margin">
+<label className="uk-form-label">                        </label>
+<div className="uk-form-controls"> <button
+onClick={() => store.addValue(x.label, '')}
+type="button"
+className="uk-button uk-button-default">{x.options}</button></div></div>
+
+      </div>
+    )
+  }
+})
+
+
   @withRouter @observer @inject('store')
   export default class SubmitForm extends React.Component {
-
     render() {
-
+var self = this
+var store = this.props.store
       return (
         <div className="uk-section uk-section-default">
-          <Form onSubmit={submittedValues => console.log(submittedValues)}>
-            {formApi => (
               <form
-                className="uk-form-horizontal uk-margin-large"
-                onSubmit={formApi.submitForm}>
+              onSubmit={submittedValues => console.log(submittedValues)}
+                className="uk-form-horizontal uk-margin-large">
                 <legend className="uk-legend">Basics</legend>
-                {forms
-                  .map(function recursive(x, i, ar) {
-                    //Branching logic
-                    if (x.type == "controlRadio") {
-                      var value = formApi.values[x.label]
-                      if (value && !ar[i].value[value]) {
-                        return <Radio key={x.label} field={x.label} label={x.label} options={x.options}/>
-                      } else if (!value) {
-                        return <Radio key={x.label} field={x.label} label={x.label} options={x.options}/>
-                      }
-                      return (
-                        <div key={x.label}>
-                          <Radio field={x.label} label={x.label} options={x.options}/>
-                          <legend className="uk-legend">{value == "Yes"
-                              ? "Personal Location"
-                              : value == "No"
-                                ? ""
-                                : value}</legend>
-                          {ar[i]
-                            .value[value]
-                            .map(recursive)}
-                        </div>
-                      )
-                    }
-
-                    if (x.type == "" || x.type == "input") {
-                      return (<Input key={x.label} field={x.label} label={x.label}/>)
-                    } else if (x.type == "radio") {
-                      return <Radio key={x.label} field={x.label} label={x.label} options={x.options}/>
-                    } else if (x.render) {
-                      return x.render()
-                    } else if (x.type == "textarea") {
-                      return <Input key={x.label} field={x.label} label={x.label} textarea={true}/>
-                    } else if (x.type == "dynamic"){
-                      return (
-                        <div>
-
-                  <Input key={x.label} field={[x.label, 0]} label={x.label} />
-                        {(formApi.values[x.label]? formApi.values[x.label]: []).map((y,z)=>{
-                          // if (z ==0)return null
-                          return ( 
-                          <Input key={z.toString()} field={[x.label, z]} label={x.label} />
-                        )
-                        })
-                      }
-                                                          <div className="uk-margin">
-          <label className="uk-form-label">                        </label>
-          <div className="uk-form-controls"> <button
-                  onClick={() => formApi.addValue(x.label, '')}
-                  type="button"
-                  className="uk-button uk-button-default">{x.options}</button></div></div>
-
-                        </div>
-                      )
-                    }
-                  })}
+                {store.form
+                  .map((x,i,ar)=>{
+                    return <Recursive key={x.label} x={x} i={i} ar={ar} store={store} />
+                    // recursive.bind(null, store, null, null)
+                  })
+                }
 
                 <p data-uk-margin>
                   <button type="submit" className="uk-button uk-button-primary">Submit</button>
                 </p>
-              </form>
-            )}
-          </Form>
-        </div>
+              </form>        </div>
       );
     }
   }
