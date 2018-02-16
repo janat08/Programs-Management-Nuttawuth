@@ -138,11 +138,11 @@ class Input extends React.Component {
         </div>
           )
         }
-        return (
-          <div key={this.props.label} className="uk-margin">
+        if (this.props.textarea){
+          return (
+            <div key={this.props.label} className="uk-margin">
           <label className="uk-form-label">{this.props.label}</label>
           <div className="uk-form-controls">
-            {this.props.textarea?
             <textarea
             className={inputClasses}
              value={get}
@@ -156,7 +156,17 @@ class Input extends React.Component {
             //    setTouched();
             //  }}
              />
-            :
+            {/* { error ? <Message message={error} /> : null }
+            { !error && warning ? <Message message={warning} /> : null }
+            { !error && !warning && success ? <Message message={success} /> : null } */}
+              </div>
+          </div>
+          )
+        }
+        return (
+          <div key={this.props.label} className="uk-margin">
+          <label className="uk-form-label">{this.props.label}</label>
+          <div className="uk-form-controls">
             <input
              className={inputClasses}
               value={get}
@@ -170,7 +180,6 @@ class Input extends React.Component {
               //   setTouched();
               // }}
               />
-              }
             {/* { error ? <Message message={error} /> : null }
             { !error && warning ? <Message message={warning} /> : null }
             { !error && !warning && success ? <Message message={success} /> : null } */}

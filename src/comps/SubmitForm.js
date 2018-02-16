@@ -62,6 +62,29 @@ var Recursive = inject("store")(observer(function ({arr, ab, x, i, ar}) {
   return (
     <div key={x.label}>
     {curriedGet([i,"value"]).map((y,z)=>{
+      return (
+        <div key={this.props.label} className="uk-margin">
+        <label className="uk-form-label"><button>asdf</asdf></label>
+        <div className="uk-form-controls">
+          <input
+           className={inputClasses}
+            value={get}
+            onInput={( e ) => {
+              set(e.target.value);
+              // if ( onInput ) {
+              //   onInput( e );
+              // }
+            }}
+            // onBlur={() => {
+            //   setTouched();
+            // }}
+            />
+          {/* { error ? <Message message={error} /> : null }
+          { !error && warning ? <Message message={warning} /> : null }
+          { !error && !warning && success ? <Message message={success} /> : null } */}
+            </div>
+        </div>
+      )
       return <ul key={z.toString()} className="uk-list uk-list-divider">
       <li>
         {y.map((yy, zz)=>{
