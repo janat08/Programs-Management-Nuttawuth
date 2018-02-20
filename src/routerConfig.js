@@ -50,73 +50,74 @@ export default[
                 name: "Forms"
             }
         ]
-    }, {
-        path : "/publisher",
-        component : Publisher,
-        name : "Publisher",
-        routes : [
-            {
-                path: "/publisher/resources",
-                component: PublisherResources,
-                name: "Resources"
-            }, {
-                path: "/publisher/history",
-                component: PublisherHistory,
-                name: "History"
-            }, {
-                path: "/publisher/access",
-                component: PublisherAccess,
-                name: "Access"
-            }
-        ]
-    }, {
-        path : "/programmer",
-        component : Programmer,
-        name : "Programmer",
-        routes : [
-            {
-                path: "/programmer/applications",
-                component: Applications,
-                name: "Applications"
-            }, {
-                path: "/programmer/programs",
-                component: Programs,
-                name: "Programs"
-            }
-        ]
-    }, {
-        path : "/user",
-        component : User,
-        name : "User",
-        routes : [
-            {
-                path: "/user/profile",
-                component: Profile,
-                name: "Profile"
-            }, {
-                path: "/user/history",
-                component: History,
-                name: "History"
-            }, {
-                path: "/user/submit",
-                component: Submit,
-                name: "Submit"
-            }
-        ]
-    }, {
-        path : "/editor",
-        component : Editor,
-        name : "Editor",
-        routes : [
-            {
-                path: "/editor/programs",
-                component: EditPrograms,
-                name: "Programs"
-            }, {
-                path: "/editor/applications",
-                component: EditApplications,
-                name: "Applications"
-            }
-        ]
-    }
+    },
+    //  {
+    //     path : "/publisher",
+    //     component : Publisher,
+    //     name : "Publisher",
+    //     routes : [
+    //         {
+    //             path: "/publisher/resources",
+    //             component: PublisherResources,
+    //             name: "Resources"
+    //         }, {
+    //             path: "/publisher/history",
+    //             component: PublisherHistory,
+    //             name: "History"
+    //         }, {
+    //             path: "/publisher/access",
+    //             component: PublisherAccess,
+    //             name: "Access"
+    //         }
+    //     ]
+    // }, {
+    //     path : "/programmer",
+    //     component : Programmer,
+    //     name : "Programmer",
+    //     routes : [
+    //         {
+    //             path: "/programmer/applications",
+    //             component: Applications,
+    //             name: "Applications"
+    //         }, {
+    //             path: "/programmer/programs",
+    //             component: Programs,
+    //             name: "Programs"
+    //         }
+    //     ]
+    // }, {
+    //     path : "/user",
+    //     component : User,
+    //     name : "User",
+    //     routes : [
+    //         {
+    //             path: "/user/profile",
+    //             component: Profile,
+    //             name: "Profile"
+    //         }, {
+    //             path: "/user/history",
+    //             component: History,
+    //             name: "History"
+    //         }, {
+    //             path: "/user/submit",
+    //             component: Submit,
+    //             name: "Submit"
+    //         }
+    //     ]
+    // }, {
+    //     path : "/editor",
+    //     component : Editor,
+    //     name : "Editor",
+    //     routes : [
+    //         {
+    //             path: "/editor/programs",
+    //             component: EditPrograms,
+    //             name: "Programs"
+    //         }, {
+    //             path: "/editor/applications",
+    //             component: EditApplications,
+    //             name: "Applications"
+    //         }
+    //     ]
+    // }
 ]

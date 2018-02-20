@@ -8,7 +8,7 @@ var App = observer(class Home extends React.Component {
 
       return (
         <div>
-        <h2> Home </h2>
+        <h2> Prototype </h2>
 
       </div>
       );
