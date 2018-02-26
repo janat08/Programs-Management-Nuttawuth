@@ -61,7 +61,7 @@ var forms = [
     }, {
       label: "Application type",
       type: "controlRadio", //default input
-      selected: "",
+      selected: "Exhibition",
       options: {
         Exhibition: [
           {
@@ -142,7 +142,52 @@ var forms = [
             ...end
           ]
         },
-      value: {}
+      value: [
+        {
+          label: "Are you interested in one of these locations",   
+          type: "multi", //multi select
+        options: ["a", "b"],  
+         value: [false, false] 
+        },
+        {
+          label: "How many people will be participating",
+          type: "input", //default input
+          options: "",
+          value: ""
+        }, 
+        {
+          label: "Special guests",
+          type: "list", //TODO: list https://getuikit.com/docs/list
+          options: "Add guest",
+          schema:                [{
+              label: "Name", 
+              type: "input", //default input
+              options: "",
+              value: ""
+             },
+                           {
+              label: "Website",
+              type: "input", //default input
+              options: "",
+              value: ""
+             }],
+          value: [
+            // {
+            //   label: "Name", ??Note it should start empty
+            //   type: "", //default input
+            //   options: "",
+            //   value: ""
+            //  }
+        ]
+        }, 
+        {
+          label: "I am interested in",
+          type: "multi", //multi select   
+          options: 
+          ["Designride ", " Design shop "],   
+          value: [false, false] },
+        ...end
+        ]
       }
     ]
 
